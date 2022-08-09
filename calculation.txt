@@ -21,7 +21,7 @@ create function operate()
 			copies results to operand1 and display variable to do more calculations
 
 create HTML calculator 
-	includes buttons for 
+	includes buttons for
 		(all require addEventListener('click', () => {}) for buttons)
 		each digit, 
 			set eventListener function to set values in an object (conditional statement)
@@ -33,7 +33,10 @@ create HTML calculator
 		and clear
 			clear needs to wipe out ALL existing data
 				wipes all values in objects
-		
+
+	use display: grid to separate buttons
+		grid-template-columns: repeat(#, auto)
+
 	ec: add "." button for floats
 		only allow 1 decimal in a number
 	
@@ -44,6 +47,7 @@ create HTML calculator
 		using addEventListener('keydown', () => {})
 			retrieve data keys for numbers, enter, backspace, delete (for clear), and operators 
 				e.keyCode
+					https://www.youtube.com/watch?v=VuN8qwZoego
 
 	display for calculator
 		create functions that populate display
