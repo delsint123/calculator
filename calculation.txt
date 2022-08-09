@@ -1,0 +1,58 @@
+calculator
+
+create basic operators functions
+	add
+		basic operand1 + operand2 
+	subtract
+		basic operand1 - operand2
+	multiply
+		basic operand1 * operand2
+	divide
+		basic operand1 / operand2
+			conditional statement add error message for division by 0
+
+create function operate()
+	takes an operator and 2 numbers then calls function from above
+		use conditional to decide which operator function to use
+		round answers with long decimals
+		operations should happen one at a time in order
+			store result in reserved variable (for further calculation)
+		after completion clear object
+			copies results to operand1 and display variable to do more calculations
+
+create HTML calculator 
+	includes buttons for 
+		(all require addEventListener('click', () => {}) for buttons)
+		each digit, 
+			set eventListener function to set values in an object (conditional statement)
+		above functions, 
+			set operator variable 
+		equals, 
+			only allow to operate if proper amount of numbers and operators are present
+			runs operate()
+		and clear
+			clear needs to wipe out ALL existing data
+				wipes all values in objects
+		
+	ec: add "." button for floats
+		only allow 1 decimal in a number
+	
+	ec: add backspace button
+		https://stackoverflow.com/questions/30849912/backspace-on-calculator-using-javascript
+		
+	ec: add keyboard support
+		using addEventListener('keydown', () => {})
+			retrieve data keys for numbers, enter, backspace, delete (for clear), and operators 
+				e.keyCode
+
+	display for calculator
+		create functions that populate display
+			should store the "display value" in a variable
+		update display with solution
+			call operate()
+			
+
+Set function to checkIfCanOperate() 
+	checks if object is filled with 2 values and operator variable is filled
+		runs operate
+
