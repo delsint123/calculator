@@ -38,7 +38,7 @@ create HTML calculator
 		grid-template-columns: repeat(#, auto)
 
 	ec: add "." button for floats
-		only allow 1 decimal in a number
+		only allow 1 decimal point in a number
 	
 	ec: add backspace button
 		https://stackoverflow.com/questions/30849912/backspace-on-calculator-using-javascript
