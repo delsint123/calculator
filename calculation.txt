@@ -23,6 +23,7 @@ create function operate()
 create HTML calculator 
 	includes buttons for
 		(all require addEventListener('click', () => {}) for buttons)
+		https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
 		each digit, 
 			set eventListener function to set values in an object (conditional statement)
 		above functions, 

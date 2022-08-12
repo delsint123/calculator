@@ -1,8 +1,10 @@
-// const container = document.querySelector('.container');
+const container = document.querySelector('.container');
 
-// const display = document.querySelector('.display');
+const display = document.querySelector('.display');
 
-// const buttons = document.querySelector('.buttons');
+const buttons = document.querySelectorAll('button');
+
+let displayValue = "";
 
 //set as operand for later use
 function add(operands) {
@@ -67,9 +69,17 @@ function operate(operand, operator) {
     }
 };
 
+function populateDisplay() {
+    buttons.forEach(button => button.addEventListener('click', button => {
+        displayValue = button.composedPath()[0].id;
+        display.textContent = displayValue;
+    }))
+}
+
 //testing purposes
 let operand = {
     value1: 10,
     value2: 3,
 };
 console.log(divide(operand));
+populateDisplay();
