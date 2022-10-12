@@ -6,43 +6,52 @@ const buttons = document.querySelectorAll('button');
 
 let displayValue = "";
 
-//set as operand for later use
-function add(operands) {
-    let result = operand.value1 + operand.value2;
+//includes operator
+let expressionValues = {
+    operator: "",
+};
+
+populateDisplay();
+getValues();
+checkIfCanOperate();
+
+
+function add(expressionValues) {
+    let result = expressionValues.value1 + expressionValues.value2;
 
     //save result if further calculations need to be made
-    operand.value1 = result;
-    operand.value2 = 0;
+    expressionValues.value1 = result;
+    expressionValues.value2 = 0;
     
     return result;
 };
 
-function subtract(operands) {
-    let result = operand.value1 - operand.value2;
+function subtract(expressionValues) {
+    let result = expressionValues.value1 - expressionValues.value2;
 
     //save result if further calculations need to be made
-    operand.value1 = result;
-    operand.value2 = 0;
+    expressionValues.value1 = result;
+    expressionValues.value2 = 0;
     
     return result;
 };
 
-function multiply(operands) {
-    let result = operand.value1 * operand.value2;
+function multiply(expressionValues) {
+    let result = expressionValues.value1 * expressionValues.value2;
 
     //save result if further calculations need to be made
-    operand.value1 = result;
-    operand.value2 = 0;
+    expressionValues.value1 = result;
+    expressionValues.value2 = 0;
     
     return result;
 };
 
-function divide(operand) {
-    let result = operand.value1 / operand.value2;
+function divide(expressionValues) {
+    let result = expressionValues.value1 / expressionValues.value2;
 
     //save result if further calculations need to be made
-    operand.value1 = result;
-    operand.value2 = 0;
+    expressionValues.value1 = result;
+    expressionValues.value2 = 0;
 
     result = roundDecimals(result);
     
@@ -54,32 +63,58 @@ function roundDecimals(result) {
     return parseFloat(result.toFixed(6)); 
 };
 
-function operate(operand, operator) {
+function operate(expressionValues) {
+
     if(operator == '+') {
-        add(operand);
+        add(expressionValues);
     }
     else if(operator == '-') {
-        subtract(operand);
+        subtract(expressionValues);
     }
     else if(operator == '*') {
-        multiply(operand);
+        multiply(expressionValues);
     }
     else if(operator == '/') {
-        divide(operand);
+        divide(expressionValues);
     }
 };
 
 function populateDisplay() {
     buttons.forEach(button => button.addEventListener('click', button => {
-        displayValue = button.composedPath()[0].id;
-        display.textContent = displayValue;
+
+        displayValue = parseFloat(button.composedPath()[0].id);
+
+        if(displayValue == NaN) {
+            displayValue = button.composedPath()[0].id;
+        }
+        else {
+            display.textContent = displayValue;
+        }
     }))
 }
 
+function getValues(expressionValues) {
+    if(typeof displayValue == "number") {
+        if(expressionValues.value1 == 0) {
+            expressionValues.value1 = displayValue;
+        }
+        else if(expressionValues.value2 == 0) {
+            expressionValues.value2 = displayValue;
+        }
+    }
+    else if(typeof displayValue == "string") {
+        expressionValues.operator = displayValue;
+    }
+}
+
+function checkIfCanOperate(expressionValues) {
+    if(typeof expressionValues.value1 == "number" && 
+        typeof expressionValues.value2 == "number" && 
+        typeof expressionValues.operator == "string") {
+        operate(expressionValues);
+    }
+}
+
 //testing purposes
-let operand = {
-    value1: 10,
-    value2: 3,
-};
-console.log(divide(operand));
-populateDisplay();
+console.log(divide(expressionValues));
+
