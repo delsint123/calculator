@@ -56,8 +56,3 @@ create HTML calculator
 		update display with solution
 			call operate()
 			
-
-Set function to checkIfCanOperate() 
-	checks if object is filled with 2 values and operator variable is filled
-		runs operate
-

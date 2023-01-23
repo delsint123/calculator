@@ -1,22 +1,30 @@
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Project: Calculator
+Org/Course: The Odin Project
+Related files: index.html, style.css, README.md, calculation.txt
+Date Started: July 29, 2022
+Recent Update: January 23, 2023
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+//initializing and declarations------------------------------------------------
 const container = document.querySelector('.container');
-
 const display = document.querySelector('.display');
-
 const buttons = document.querySelectorAll('button');
 
-let displayValue = "";
-
+let displayValue = "ENTER A VALUE";
 let currOperation = "";
 let expressionValues = [];
 
 let numbers = new Set("1234567890");
 let operators = new Set("+-*/");
 
+//function calls --------------------------------------------------------------
 populateDisplay();
-getValues();
-checkIfCanOperate();
 
-//operators
+
+//functions -------------------------------------------------------------------
+
+//operations
 function add(expressionValues) {
     //must be numbers because of string concatenation as default
     expressionValues.push(parseFloat(expressionValues.pop()) + parseFloat(expressionValues.pop()));
@@ -46,7 +54,7 @@ function roundDecimals(result) {
 };
 
 
-//calc functions
+//decipher which operation to do
 function operate(expressionValues) {
     if(currOperation == '+') {
         add(expressionValues);
@@ -62,44 +70,68 @@ function operate(expressionValues) {
     }
 };
 
+
 function populateDisplay() {
     let idx = 0;
 
     buttons.forEach(button => button.addEventListener('click', button => {
-
         let temp = button.composedPath()[0].id;
 
         if(temp === "clear") {
-            //reset all values
-            currOperation = "";
-            expressionValues = [];
-            displayValue = "";
-            idx = 0;
-
-            display.textContent = displayValue;
+            clear();
         }
+        //add number to stack
         else if(numbers.has(temp)) {
-            if(expressionValues.length > idx) {
-                expressionValues[idx] += temp;
-            }
-            else {
-                expressionValues.push(temp);
-            }
-
-            displayValue = expressionValues[idx];
-            display.textContent = displayValue;
+            getValues();
         }
+        //set operation
         else if(operators.has(temp)){
             currOperation = temp;
+            setOperation();
+
             idx++;
         }
+        //complete operation
         else {
             operate(expressionValues);
             idx = 0;
         }
     }))
+
+    //function definitions for above calls
+    const clear = () => {
+        currOperation = "";
+        expressionValues = [];
+        displayValue = "ENTER A VALUE";
+        idx = 0;
+
+        display.textContent = displayValue;
+    }
+
+    const getValues = () => {
+        if(expressionValues.length > idx) {
+            expressionValues[idx] += temp;
+        }
+        else {
+            expressionValues.push(temp);
+        }
+
+        //handles leading zeroes;
+        if(expressionValues[idx][0] === '0') {
+            processNum();
+        }
+
+        displayValue = expressionValues[idx];
+        display.textContent = displayValue;
+    }
 }
 
-//testing purposes
-console.log(divide(expressionValues));
+//highlights the current operation
+function setOperation() {
 
+}
+
+//handles leading zeros
+function processNum() {
+
+}
