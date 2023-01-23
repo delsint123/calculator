@@ -6,10 +6,7 @@ const buttons = document.querySelectorAll('button');
 
 let displayValue = "";
 
-//includes operator
-let expressionValues = {
-    operator: "",
-};
+let expressionValues = [];
 
 populateDisplay();
 getValues();
@@ -17,45 +14,21 @@ checkIfCanOperate();
 
 
 function add(expressionValues) {
-    let result = expressionValues.value1 + expressionValues.value2;
-
-    //save result if further calculations need to be made
-    expressionValues.value1 = result;
-    expressionValues.value2 = 0;
-    
-    return result;
+    expressionValues.push(expressionValues.pop() + expressionValues.pop());
 };
 
 function subtract(expressionValues) {
-    let result = expressionValues.value1 - expressionValues.value2;
-
-    //save result if further calculations need to be made
-    expressionValues.value1 = result;
-    expressionValues.value2 = 0;
-    
-    return result;
+    let temp = expressionValues.pop();
+    expressionValues.push(expressionValues.pop() - temp);
 };
 
 function multiply(expressionValues) {
-    let result = expressionValues.value1 * expressionValues.value2;
-
-    //save result if further calculations need to be made
-    expressionValues.value1 = result;
-    expressionValues.value2 = 0;
-    
-    return result;
+    expressionValues.push(expressionValues.pop() * expressionValues.pop());
 };
 
 function divide(expressionValues) {
-    let result = expressionValues.value1 / expressionValues.value2;
-
-    //save result if further calculations need to be made
-    expressionValues.value1 = result;
-    expressionValues.value2 = 0;
-
-    result = roundDecimals(result);
-    
-    return result;
+    let temp = expressionValues.pop();
+    expressionValues.push(roundDecimals(expressionValues.pop() / temp));
 };
 
 function roundDecimals(result) {
@@ -82,14 +55,11 @@ function operate(expressionValues) {
 function populateDisplay() {
     buttons.forEach(button => button.addEventListener('click', button => {
 
-        displayValue = parseFloat(button.composedPath()[0].id);
+        displayValue = button.composedPath()[0].id;
 
-        if(displayValue == NaN) {
-            displayValue = button.composedPath()[0].id;
-        }
-        else {
-            display.textContent = displayValue;
-        }
+        
+        display.textContent = displayValue;
+        
     }))
 }
 
