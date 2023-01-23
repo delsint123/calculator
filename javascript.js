@@ -97,8 +97,10 @@ function populateDisplay() {
         }
         //complete operation
         else {
-            operate(expressionValues);
-            idx = 0;
+            if(expressionValues.length >= 2) {
+                operate(expressionValues);
+                idx = 0;
+            }
         }
     }))
 
