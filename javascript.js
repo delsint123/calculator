@@ -33,7 +33,7 @@ function add(expressionValues) {
 
 function subtract(expressionValues) {
     let temp = expressionValues.pop();
-    expressionValues.push(expressionValues.pop() - temp);
+    expressionValues.push(roundDecimals(expressionValues.pop() - temp));
     display.textContent = expressionValues[0];
 };
 
@@ -93,6 +93,10 @@ function populateDisplay() {
         if(temp === "clear") {
             clearDisplay();
         }
+        //backspace number 
+        else if(temp === "backspace") {
+            backspace();
+        }
         //add number to stack
         else if(numbers.has(temp)) {
             getValues(temp); 
@@ -130,6 +134,26 @@ function populateDisplay() {
         display.textContent = displayValue;
     }
 
+    //functions as a backspace
+    const backspace = () => {
+        if(expressionValues[idx].length > 0) {
+            expressionValues[idx] = expressionValues[idx].slice(0, expressionValues[idx].length - 1);
+
+            //if last value is a decimal
+            if(expressionValues.length > 0 && expressionValues[idx].at(-1) === '.') {
+                expressionValues[idx] = expressionValues[idx].slice(0, expressionValues[idx].length - 1);
+            }
+            //if there is no values
+            if(expressionValues[idx].length === 0) {
+                expressionValues[idx] = '0';
+            }
+
+            display.textContent = expressionValues[idx];
+        }
+
+    }
+
+    //stores the input values
     const getValues = (temp) => {
         if(expressionValues.length > idx) {
 

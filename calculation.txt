@@ -56,3 +56,4 @@ create HTML calculator
 		update display with solution
 			call operate()
 			
+**bug: needs to fix when user is allowed to enter value after it is calculated.
