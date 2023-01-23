@@ -6,7 +6,11 @@ const buttons = document.querySelectorAll('button');
 
 let displayValue = "";
 
+let currOperation = "";
 let expressionValues = [];
+
+let numbers = new Set("1234567890.");
+let operators = new Set("+-*/");
 
 populateDisplay();
 getValues();
@@ -15,20 +19,24 @@ checkIfCanOperate();
 
 function add(expressionValues) {
     expressionValues.push(expressionValues.pop() + expressionValues.pop());
+    display.textContent = expressionValues[0];
 };
 
 function subtract(expressionValues) {
     let temp = expressionValues.pop();
     expressionValues.push(expressionValues.pop() - temp);
+    display.textContent = expressionValues[0];
 };
 
 function multiply(expressionValues) {
     expressionValues.push(expressionValues.pop() * expressionValues.pop());
+    display.textContent = expressionValues[0];
 };
 
 function divide(expressionValues) {
     let temp = expressionValues.pop();
     expressionValues.push(roundDecimals(expressionValues.pop() / temp));
+    display.textContent = expressionValues[0];
 };
 
 function roundDecimals(result) {
@@ -38,28 +46,46 @@ function roundDecimals(result) {
 
 function operate(expressionValues) {
 
-    if(operator == '+') {
+    if(currOperation == '+') {
         add(expressionValues);
     }
-    else if(operator == '-') {
+    else if(currOperation == '-') {
         subtract(expressionValues);
     }
-    else if(operator == '*') {
+    else if(currOperation == '*') {
         multiply(expressionValues);
     }
-    else if(operator == '/') {
+    else if(currOperation == '/') {
         divide(expressionValues);
     }
 };
 
 function populateDisplay() {
+    let idx = 0;
+
     buttons.forEach(button => button.addEventListener('click', button => {
 
-        displayValue = button.composedPath()[0].id;
+        let temp = button.composedPath()[0].id;
 
-        
-        display.textContent = displayValue;
-        
+        if(numbers.has(temp)) {
+            if(expressionValues.length > idx) {
+                expressionValues[idx] += temp;
+            }
+            else {
+                expressionValues.push(temp);
+            }
+
+            displayValue = expressionValues[idx];
+            display.textContent = displayValue;
+        }
+        else if(operators.has(temp)){
+            currOperation = temp;
+            idx++;
+        }
+        else {
+            operate(expressionValues);
+            idx = 0;
+        }
     }))
 }
 
