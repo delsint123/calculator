@@ -11,7 +11,7 @@ const container = document.querySelector('.container');
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
 
-let displayValue = "ENTER A VALUE";
+let displayValue = "0";
 let currOperation = "";
 let expressionValues = [];
 
@@ -75,6 +75,7 @@ function populateDisplay() {
     let idx = 0;
 
     buttons.forEach(button => button.addEventListener('click', button => {
+
         let temp = button.composedPath()[0].id;
 
         if(temp === "clear") {
@@ -82,7 +83,7 @@ function populateDisplay() {
         }
         //add number to stack
         else if(numbers.has(temp)) {
-            getValues();
+            getValues(temp);
         }
         //set operation
         else if(operators.has(temp)){
@@ -108,7 +109,7 @@ function populateDisplay() {
         display.textContent = displayValue;
     }
 
-    const getValues = () => {
+    const getValues = (temp) => {
         if(expressionValues.length > idx) {
             expressionValues[idx] += temp;
         }
@@ -124,6 +125,7 @@ function populateDisplay() {
         displayValue = expressionValues[idx];
         display.textContent = displayValue;
     }
+
 }
 
 //highlights the current operation
