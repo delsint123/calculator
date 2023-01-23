@@ -9,14 +9,14 @@ let displayValue = "";
 let currOperation = "";
 let expressionValues = [];
 
-let numbers = new Set("1234567890.");
+let numbers = new Set("1234567890");
 let operators = new Set("+-*/");
 
 populateDisplay();
 getValues();
 checkIfCanOperate();
 
-
+//operators
 function add(expressionValues) {
     //must be numbers because of string concatenation as default
     expressionValues.push(parseFloat(expressionValues.pop()) + parseFloat(expressionValues.pop()));
@@ -45,6 +45,8 @@ function roundDecimals(result) {
     return parseFloat(result.toFixed(6)); 
 };
 
+
+//calc functions
 function operate(expressionValues) {
     if(currOperation == '+') {
         add(expressionValues);
@@ -67,12 +69,14 @@ function populateDisplay() {
 
         let temp = button.composedPath()[0].id;
 
-        console.log(temp);
-
-        if(temp === "AC") {
+        if(temp === "clear") {
+            //reset all values
             currOperation = "";
-            expressionValues = "";
+            expressionValues = [];
             displayValue = "";
+            idx = 0;
+
+            display.textContent = displayValue;
         }
         else if(numbers.has(temp)) {
             if(expressionValues.length > idx) {
@@ -94,28 +98,6 @@ function populateDisplay() {
             idx = 0;
         }
     }))
-}
-
-function getValues(expressionValues) {
-    if(typeof displayValue == "number") {
-        if(expressionValues.value1 == 0) {
-            expressionValues.value1 = displayValue;
-        }
-        else if(expressionValues.value2 == 0) {
-            expressionValues.value2 = displayValue;
-        }
-    }
-    else if(typeof displayValue == "string") {
-        expressionValues.operator = displayValue;
-    }
-}
-
-function checkIfCanOperate(expressionValues) {
-    if(typeof expressionValues.value1 == "number" && 
-        typeof expressionValues.value2 == "number" && 
-        typeof expressionValues.operator == "string") {
-        operate(expressionValues);
-    }
 }
 
 //testing purposes
