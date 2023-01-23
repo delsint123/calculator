@@ -15,7 +15,7 @@ let displayValue = "0";
 let currOperation = "";
 let expressionValues = [];
 
-let numbers = new Set("1234567890");
+let numbers = new Set("1234567890.");
 let operators = new Set("+-*/");
 
 //function calls --------------------------------------------------------------
@@ -38,7 +38,8 @@ function subtract(expressionValues) {
 };
 
 function multiply(expressionValues) {
-    expressionValues.push(expressionValues.pop() * expressionValues.pop());
+    let curr = roundDecimals(expressionValues.pop() * expressionValues.pop())
+    expressionValues.push(curr);
     display.textContent = expressionValues[0];
 };
 
@@ -114,13 +115,17 @@ function populateDisplay() {
             expressionValues[idx] += temp;
         }
         else {
-            expressionValues.push(temp);
+            //if decimal is the first button clicked
+            if(temp === '.') {
+                expressionValues.push('0.');
+            }
+            else {
+                expressionValues.push(temp); 
+            }
         }
 
         //handles leading zeroes;
-        if(expressionValues[idx][0] === '0') {
-            processNum();
-        }
+        processZeroes(idx);
 
         displayValue = expressionValues[idx];
         display.textContent = displayValue;
@@ -134,6 +139,21 @@ function setOperation() {
 }
 
 //handles leading zeros
-function processNum() {
+function processZeroes(idx) {
+    if(expressionValues[idx][0] === '0' && expressionValues[idx][1] !== '.') {
+        if(expressionValues[idx].length > 1) {
+            let val = "";
 
+            let i = 0;
+            while(expressionValues[idx][i] === '0') {
+                i++;
+            }
+
+            for(; i < expressionValues[idx].length; i++) {
+                val += expressionValues[idx][i];
+            }
+
+            expressionValues[idx] = val;
+        }
+    }
 }
