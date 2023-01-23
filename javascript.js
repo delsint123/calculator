@@ -78,6 +78,7 @@ function operate(expressionValues) {
         divide(expressionValues);
     }
 
+    currOperation = "";
     //clear highlighted operations
     clearButtons();
 };
@@ -102,7 +103,7 @@ function populateDisplay() {
             getValues(temp); 
         }
         //set operation
-        else if(operators.has(temp)){
+        else if(operators.has(temp) && currOperation.length === 0 && expressionValues.length >= 1){
             //check if need to be operated since only 2 numbers can be evaluated at once
             if(expressionValues.length >= 2) {
                 operate(expressionValues);
@@ -184,7 +185,7 @@ function populateDisplay() {
 //highlights the current operation
 function highlight() {
     let currButton = document.getElementById(`${currOperation}`);
-    currButton.style.cssText = 'background-color: darkcyan';
+    currButton.style.cssText = 'background-color: rgb(0, 187, 187); color:rgb(226, 226, 226)';
 }
 
 //clears operation highlight after calculation is complete
