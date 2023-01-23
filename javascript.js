@@ -69,6 +69,9 @@ function operate(expressionValues) {
     else if(currOperation == '/') {
         divide(expressionValues);
     }
+
+    //clear highlighted operations
+    clear();
 };
 
 
@@ -89,8 +92,7 @@ function populateDisplay() {
         //set operation
         else if(operators.has(temp)){
             currOperation = temp;
-            setOperation();
-
+            highlight();
             idx++;
         }
         //complete operation
@@ -104,7 +106,7 @@ function populateDisplay() {
     const clear = () => {
         currOperation = "";
         expressionValues = [];
-        displayValue = "ENTER A VALUE";
+        displayValue = "0";
         idx = 0;
 
         display.textContent = displayValue;
@@ -134,8 +136,15 @@ function populateDisplay() {
 }
 
 //highlights the current operation
-function setOperation() {
+function highlight() {
+    let currButton = document.getElementById(`${currOperation}`);
+    currButton.style.cssText = 'background-color: darkcyan';
+}
 
+//clears operation highlight after calculation is complete
+function clear() {
+    let currButton = document.getElementById(`${currOperation}`);
+    currButton.removeAttribute('style');
 }
 
 //handles leading zeros
