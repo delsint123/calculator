@@ -79,7 +79,7 @@ function operate(expressionValues) {
     }
 
     //clear highlighted operations
-    clear();
+    clearButtons();
 };
 
 
@@ -91,21 +91,23 @@ function populateDisplay() {
         let temp = button.composedPath()[0].id;
 
         if(temp === "clear") {
-            clear();
+            clearDisplay();
         }
         //add number to stack
         else if(numbers.has(temp)) {
-            getValues(temp);
-
+            getValues(temp); 
+        }
+        //set operation
+        else if(operators.has(temp)){
+            //check if need to be operated since only 2 numbers can be evaluated at once
             if(expressionValues.length >= 2) {
                 operate(expressionValues);
                 idx = 0;
             }
-        }
-        //set operation
-        else if(operators.has(temp)){
+            
             currOperation = temp;
             highlight();
+
             idx++;
         }
         //complete operation
@@ -118,18 +120,23 @@ function populateDisplay() {
     }))
 
     //function definitions for above calls
-    const clear = () => {
+    const clearDisplay = () => {
         currOperation = "";
         expressionValues = [];
         displayValue = "0";
         idx = 0;
+        clearButtons();
 
         display.textContent = displayValue;
     }
 
     const getValues = (temp) => {
         if(expressionValues.length > idx) {
-            expressionValues[idx] += temp;
+
+            //only do this if it is an integer or there is no decimals in the value
+            if(!(temp === '.' && expressionValues[idx] && expressionValues[idx].includes('.'))) {
+                expressionValues[idx] += temp;
+            }
         }
         else {
             //if decimal is the first button clicked
@@ -157,9 +164,16 @@ function highlight() {
 }
 
 //clears operation highlight after calculation is complete
-function clear() {
-    let currButton = document.getElementById(`${currOperation}`);
-    currButton.removeAttribute('style');
+function clearButtons() {
+    let ops = Array.from(operators);
+
+    for(let i = 0; i < ops.length; i++) {
+        let currButton = document.getElementById(`${ops[i]}`);
+
+        if(currButton.hasAttribute('style')) {
+            currButton.removeAttribute('style');
+        }
+    }    
 }
 
 //handles leading zeros
