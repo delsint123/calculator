@@ -57,3 +57,5 @@ create HTML calculator
 			call operate()
 			
 **bug: needs to fix when user is allowed to enter value after it is calculated.
+** hacve not added keyboard support
+** bug: can only hit one operation

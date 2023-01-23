@@ -17,8 +17,32 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0px;
+    padding: 0px;
     font-family: Walkway;
-    background-color: black;
+}
+
+.bg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(60deg, rgb(97, 97, 220), rgb(124, 255, 231), rgb(207, 147, 252));
+    background-size: 600% 600%;
+    animation: bgAnimatedGradient 15s infinite linear;
+}
+
+@keyframes bgAnimatedGradient{
+    0% {
+        background-position: 0 85%;
+    }
+    50% {
+        background-position: 100% 20%;
+    }
+    100% {
+        background-position: 0% 85%;
+    }
 }
 
 .container {
@@ -28,19 +52,20 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(43, 43, 43);
+    background-color: rgb(211, 211, 211);
     border-radius: 20px;
-    border: 0.25px solid rgb(82, 82, 82);
+    border: 0.25px solid rgb(255, 255, 255);
+    box-shadow: 0 8px 12px 0 rgba(255, 255, 255, 0.50);
 }
 
 .display {
-    color: lightgray;
+    color: rgb(0, 0, 0);
     font-size: 36px;
     text-align: right;
     padding: 25px;
     width: 325px;
     margin: 15px;
-    background-color: rgb(82, 82, 82);
+    background-color: rgb(226, 226, 226);;
 }
 
 .buttons {
@@ -57,9 +82,9 @@ button {
     margin: 5px;
     border: 0px none;
     border-radius: 50%;
-    color: lightgray;
+    color: rgb(0, 0, 0);
     transition-duration: 0.4s;
-    background-color: rgb(82, 82, 82);
+    background-color: rgb(226, 226, 226);
 }
 
 button:hover {
