@@ -46,7 +46,15 @@ function multiply(expressionValues) {
 function divide(expressionValues) {
     let temp = expressionValues.pop();
     expressionValues.push(roundDecimals(expressionValues.pop() / temp));
-    display.textContent = expressionValues[0];
+
+    //handles division by 0
+    if(expressionValues[0] === Infinity) {
+        display.textContent = "Stop That!"
+        expressionValues[0] = 0;
+    }
+    else {
+        display.textContent = expressionValues[0];
+    }
 };
 
 function roundDecimals(result) {
