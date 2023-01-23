@@ -96,6 +96,11 @@ function populateDisplay() {
         //add number to stack
         else if(numbers.has(temp)) {
             getValues(temp);
+
+            if(expressionValues.length >= 2) {
+                operate(expressionValues);
+                idx = 0;
+            }
         }
         //set operation
         else if(operators.has(temp)){
