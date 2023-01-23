@@ -18,7 +18,8 @@ checkIfCanOperate();
 
 
 function add(expressionValues) {
-    expressionValues.push(expressionValues.pop() + expressionValues.pop());
+    //must be numbers because of string concatenation as default
+    expressionValues.push(parseFloat(expressionValues.pop()) + parseFloat(expressionValues.pop()));
     display.textContent = expressionValues[0];
 };
 
@@ -45,7 +46,6 @@ function roundDecimals(result) {
 };
 
 function operate(expressionValues) {
-
     if(currOperation == '+') {
         add(expressionValues);
     }
@@ -67,7 +67,14 @@ function populateDisplay() {
 
         let temp = button.composedPath()[0].id;
 
-        if(numbers.has(temp)) {
+        console.log(temp);
+
+        if(temp === "AC") {
+            currOperation = "";
+            expressionValues = "";
+            displayValue = "";
+        }
+        else if(numbers.has(temp)) {
             if(expressionValues.length > idx) {
                 expressionValues[idx] += temp;
             }
