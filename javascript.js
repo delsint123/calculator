@@ -11,14 +11,82 @@ const container = document.querySelector('.container');
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
 
-let displayValue = "0";
+//let displayValue = "0";
 let currOperation = "";
 let expressionValues = [];
 
 let numbers = new Set("1234567890.");
 let operators = new Set("+-*/");
 
+class mainCalc {
+    constructor(displayValue = "0", currOperation = "", expressionValues = []){
+        this.displayValue = displayValue;
+        this.currOperation = currOperation;
+        this.expressionValues = expressionValues;
+    }
+    setDisplayValue(displayValue){
+        let tempArr = displayValue.split('');
+        const inRange = (currVal) => numbers.has(currVal);
+        
+        if(tempArr.every(inRange)) {
+            this.displayValue = displayValue;
+        }
+        else {
+            throw new Error(`${displayValue} is not a number`);
+        }
+        
+    }
+    getDisplayValue(){
+        return this.displayValue;
+    }
+}
+
+// let mainCalc = function(){
+    // var displayValue = "0";
+    // var currOperation = "";
+    // var expressionValues = [];
+
+    //setters
+    // var settersAndGetters = {
+        //setters
+        // setDisplayValue: function(displayVal){
+        //     if(!numbers.has(displayVal)) {
+        //         throw new Error(`${displayVal} is not a number`);
+        //     }
+        //     displayValue = displayVal;
+        // },
+        // function setCurrOperation(operation){
+        //     if(!operators.has(operation)) {
+        //         throw new Error(`${operation} is not a valid operator`);
+        //     }
+        //     currOperation = operation;
+        // }
+        // function setExpressionValues(values){
+        //     if(values.every((currVal) => {numbers.has(currVal);})) {
+        //         expressionValues = values;
+        //     }
+        //     else {
+        //         throw new Error(`${values} are not valid`)
+        //     }
+        // }
+
+        //getters
+        // getDisplayValue: function(){
+        //     return displayValue;
+        // }
+        // function getCurrOperation(){
+        //     return currOperation;
+        // }
+        // function getExpressionValues(){
+        //     return expressionValues;
+        // }
+//     }
+    
+//     return settersAndGetters;
+// }
+
 //function calls --------------------------------------------------------------
+let Calc = new mainCalc();
 populateDisplay();
 
 
@@ -128,11 +196,11 @@ function populateDisplay() {
     const clearDisplay = () => {
         currOperation = "";
         expressionValues = [];
-        displayValue = "0";
+        Calc.setDisplayValue("0");
         idx = 0;
         clearButtons();
 
-        display.textContent = displayValue;
+        display.textContent = Calc.getDisplayValue();
     }
 
     //functions as a backspace
@@ -176,8 +244,10 @@ function populateDisplay() {
         //handles leading zeroes;
         processZeroes(idx);
 
-        displayValue = expressionValues[idx];
-        display.textContent = displayValue;
+        console.log(Calc.getDisplayValue());
+
+        Calc.setDisplayValue(expressionValues[idx]);
+        display.textContent = Calc.getDisplayValue();
     }
 
 }
