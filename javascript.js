@@ -11,10 +11,6 @@ const container = document.querySelector('.container');
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
 
-//let displayValue = "0";
-//let currOperation = "";
-let expressionValues = [];
-
 let numbers = new Set("1234567890.");
 let operators = new Set("+-*/");
 
@@ -37,6 +33,7 @@ class mainCalc {
             throw new Error(`${displayValue} is not a number`);
         }
     }
+
     setCurrOperation(operation){
         if(!operators.has(operation) && operation.length > 0) {
             throw new Error(`${operation} is not a valid operator`);
@@ -44,58 +41,42 @@ class mainCalc {
         this.currOperation = operation;
     }
 
+    setExpressionValues(values){
+        const inRange = (currVal) => {
+            numbers.has(currVal);
+        }
+        const strProcessing = (curr) => {
+            let temp = Array.from(curr);
+            let res = true;
+
+            temp.forEach((val) => {
+                res && inRange(val);
+            })
+
+            return res
+        };
+
+        if(values.every(strProcessing)) {
+            this.expressionValues = values;
+        }
+        else {
+            throw new Error(`${values} are not valid`)
+        }
+    }
+
     //getters
     getDisplayValue(){
         return this.displayValue;
     }
+
     getCurrOperation(){
         return this.currOperation;
     }
+
+    getExpressionValues(){
+        return this.expressionValues;
+    }
 }
-
-// let mainCalc = function(){
-    // var displayValue = "0";
-    // var currOperation = "";
-    // var expressionValues = [];
-
-    //setters
-    // var settersAndGetters = {
-        //setters
-        // setDisplayValue: function(displayVal){
-        //     if(!numbers.has(displayVal)) {
-        //         throw new Error(`${displayVal} is not a number`);
-        //     }
-        //     displayValue = displayVal;
-        // },
-        // function setCurrOperation(operation){
-        //     if(!operators.has(operation)) {
-        //         throw new Error(`${operation} is not a valid operator`);
-        //     }
-        //     currOperation = operation;
-        // }
-        // function setExpressionValues(values){
-        //     if(values.every((currVal) => {numbers.has(currVal);})) {
-        //         expressionValues = values;
-        //     }
-        //     else {
-        //         throw new Error(`${values} are not valid`)
-        //     }
-        // }
-
-        //getters
-        // getDisplayValue: function(){
-        //     return displayValue;
-        // }
-        // function getCurrOperation(){
-        //     return currOperation;
-        // }
-        // function getExpressionValues(){
-        //     return expressionValues;
-        // }
-//     }
-    
-//     return settersAndGetters;
-// }
 
 //function calls --------------------------------------------------------------
 let Calc = new mainCalc();
@@ -105,35 +86,46 @@ populateDisplay();
 //functions -------------------------------------------------------------------
 
 //operations
-function add(expressionValues) {
+function add() {
     //must be numbers because of string concatenation as default
-    expressionValues.push(parseFloat(expressionValues.pop()) + parseFloat(expressionValues.pop()));
-    display.textContent = expressionValues[0];
+    let tempArr = Calc.getExpressionValues();
+    tempArr.push(parseFloat(tempArr.pop()) + parseFloat(tempArr.pop()))
+
+    Calc.setExpressionValues(tempArr);
+    display.textContent = (Calc.getExpressionValues())[0];
 };
 
-function subtract(expressionValues) {
-    let temp = expressionValues.pop();
-    expressionValues.push(roundDecimals(expressionValues.pop() - temp));
-    display.textContent = expressionValues[0];
+function subtract() {
+    let tempArr = Calc.getExpressionValues();
+    let tempVal = tempArr.pop();
+    tempArr.push(roundDecimals(tempArr.pop() - tempVal));
+
+    Calc.setExpressionValues(tempArr);
+    display.textContent = (Calc.getExpressionValues())[0];
 };
 
-function multiply(expressionValues) {
-    let curr = roundDecimals(expressionValues.pop() * expressionValues.pop())
-    expressionValues.push(curr);
-    display.textContent = expressionValues[0];
+function multiply() {
+    let tempArr = Calc.getExpressionValues();
+    let curr = roundDecimals(tempArr.pop() * tempArr.pop())
+    tempArr.push(curr);
+
+    Calc.setExpressionValues(tempArr);
+    display.textContent = (Calc.getExpressionValues())[0];
 };
 
-function divide(expressionValues) {
-    let temp = expressionValues.pop();
-    expressionValues.push(roundDecimals(expressionValues.pop() / temp));
+function divide() {
+    let tempArr = Calc.getExpressionValues();
+    let temp = tempArr.pop();
+    tempArr.push(roundDecimals(tempArr.pop() / temp));
 
     //handles division by 0
-    if(expressionValues[0] === Infinity) {
+    if((Calc.getExpressionValues())[0] === Infinity) {
         display.textContent = "Stop That!"
-        expressionValues[0] = 0;
+        Calc.setExpressionValues([0]);
     }
     else {
-        display.textContent = expressionValues[0];
+        Calc.setExpressionValues(tempArr);
+        display.textContent = (Calc.getExpressionValues())[0];
     }
 };
 
@@ -144,20 +136,20 @@ function roundDecimals(result) {
 
 
 //decipher which operation to do
-function operate(expressionValues) {
+function operate() {
     let currOperator = Calc.getCurrOperation();
 
     if(currOperator == '+') {
-        add(expressionValues);
+        add();
     }
     else if(currOperator == '-') {
-        subtract(expressionValues);
+        subtract();
     }
     else if(currOperator == '*') {
-        multiply(expressionValues);
+        multiply();
     }
     else if(currOperator == '/') {
-        divide(expressionValues);
+        divide();
     }
 
     Calc.setCurrOperation("");
@@ -185,10 +177,10 @@ function populateDisplay() {
             getValues(temp); 
         }
         //set operation
-        else if(operators.has(temp) && Calc.getCurrOperation().length === 0 && expressionValues.length >= 1){
+        else if(operators.has(temp) && Calc.getCurrOperation().length === 0 && Calc.getExpressionValues().length >= 1){
             //check if need to be operated since only 2 numbers can be evaluated at once
-            if(expressionValues.length >= 2) {
-                operate(expressionValues);
+            if(Calc.getExpressionValues().length >= 2) {
+                operate();
                 idx = 0;
             }
             
@@ -199,8 +191,8 @@ function populateDisplay() {
         }
         //complete operation
         else {
-            if(expressionValues.length >= 2) {
-                operate(expressionValues);
+            if(Calc.getExpressionValues().length >= 2) {
+                operate();
                 idx = 0;
             }
         }
@@ -209,7 +201,7 @@ function populateDisplay() {
     //function definitions for above calls
     const clearDisplay = () => {
         Calc.setCurrOperation("");
-        expressionValues = [];
+        Calc.setExpressionValues([]);
         Calc.setDisplayValue("0");
         idx = 0;
         clearButtons();
@@ -219,46 +211,52 @@ function populateDisplay() {
 
     //functions as a backspace
     const backspace = () => {
-        if(expressionValues[idx].length > 0) {
-            expressionValues[idx] = expressionValues[idx].slice(0, expressionValues[idx].length - 1);
+        let tempArr = Calc.getExpressionValues();
+
+        if(tempArr[idx].length > 0) {
+            tempArr[idx] = tempArr[idx].slice(0, tempArr[idx].length - 1);
 
             //if last value is a decimal
-            if(expressionValues.length > 0 && expressionValues[idx].at(-1) === '.') {
-                expressionValues[idx] = expressionValues[idx].slice(0, expressionValues[idx].length - 1);
+            if(tempArr.length > 0 && tempArr[idx].at(-1) === '.') {
+                tempArr[idx] = tempArr[idx].slice(0, tempArr[idx].length - 1);
             }
             //if there is no values
-            if(expressionValues[idx].length === 0) {
-                expressionValues[idx] = '0';
+            if(tempArr[idx].length === 0) {
+                tempArr[idx] = '0';
             }
 
-            display.textContent = expressionValues[idx];
+            Calc.setExpressionValues(tempArr);
+            display.textContent = Calc.getExpressionValues();
         }
 
     }
 
     //stores the input values
     const getValues = (temp) => {
-        if(expressionValues.length > idx) {
+        let tempArr = Calc.getExpressionValues();
 
+        if(tempArr.length > idx) {
             //only do this if it is an integer or there is no decimals in the value
-            if(!(temp === '.' && expressionValues[idx] && expressionValues[idx].includes('.'))) {
-                expressionValues[idx] += temp;
+            if(!(temp === '.' && tempArr[idx] && tempArr[idx].includes('.'))) {
+                tempArr[idx] += temp;
             }
         }
         else {
             //if decimal is the first button clicked
             if(temp === '.') {
-                expressionValues.push('0.');
+                tempArr.push('0.');
             }
             else {
-                expressionValues.push(temp); 
+                tempArr.push(temp); 
             }
         }
+
+        Calc.setExpressionValues(tempArr);
 
         //handles leading zeroes;
         processZeroes(idx);
 
-        Calc.setDisplayValue(expressionValues[idx]);
+        Calc.setDisplayValue(Calc.getExpressionValues()[idx]);
         display.textContent = Calc.getDisplayValue();
     }
 
@@ -285,20 +283,24 @@ function clearButtons() {
 
 //handles leading zeros
 function processZeroes(idx) {
-    if(expressionValues[idx][0] === '0' && expressionValues[idx][1] !== '.') {
-        if(expressionValues[idx].length > 1) {
+    let tempArr = Calc.getExpressionValues();
+
+    if(tempArr[idx][0] === '0' && tempArr[idx][1] !== '.') {
+        if(tempArr[idx].length > 1) {
             let val = "";
 
             let i = 0;
-            while(expressionValues[idx][i] === '0') {
+            while(tempArr[idx][i] === '0') {
                 i++;
             }
 
-            for(; i < expressionValues[idx].length; i++) {
-                val += expressionValues[idx][i];
+            for(; i < tempArr[idx].length; i++) {
+                val += tempArr[idx][i];
             }
 
-            expressionValues[idx] = val;
+            tempArr[idx] = val;
         }
     }
+
+    Calc.setExpressionValues(tempArr);
 }
