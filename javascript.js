@@ -12,7 +12,7 @@ const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
 
 //let displayValue = "0";
-let currOperation = "";
+//let currOperation = "";
 let expressionValues = [];
 
 let numbers = new Set("1234567890.");
@@ -24,20 +24,32 @@ class mainCalc {
         this.currOperation = currOperation;
         this.expressionValues = expressionValues;
     }
+
+    //setters
     setDisplayValue(displayValue){
         let tempArr = displayValue.split('');
         const inRange = (currVal) => numbers.has(currVal);
-        
+
         if(tempArr.every(inRange)) {
             this.displayValue = displayValue;
         }
         else {
             throw new Error(`${displayValue} is not a number`);
         }
-        
     }
+    setCurrOperation(operation){
+        if(!operators.has(operation) && operation.length > 0) {
+            throw new Error(`${operation} is not a valid operator`);
+        }
+        this.currOperation = operation;
+    }
+
+    //getters
     getDisplayValue(){
         return this.displayValue;
+    }
+    getCurrOperation(){
+        return this.currOperation;
     }
 }
 
@@ -133,20 +145,22 @@ function roundDecimals(result) {
 
 //decipher which operation to do
 function operate(expressionValues) {
-    if(currOperation == '+') {
+    let currOperator = Calc.getCurrOperation();
+
+    if(currOperator == '+') {
         add(expressionValues);
     }
-    else if(currOperation == '-') {
+    else if(currOperator == '-') {
         subtract(expressionValues);
     }
-    else if(currOperation == '*') {
+    else if(currOperator == '*') {
         multiply(expressionValues);
     }
-    else if(currOperation == '/') {
+    else if(currOperator == '/') {
         divide(expressionValues);
     }
 
-    currOperation = "";
+    Calc.setCurrOperation("");
     //clear highlighted operations
     clearButtons();
 };
@@ -171,14 +185,14 @@ function populateDisplay() {
             getValues(temp); 
         }
         //set operation
-        else if(operators.has(temp) && currOperation.length === 0 && expressionValues.length >= 1){
+        else if(operators.has(temp) && Calc.getCurrOperation().length === 0 && expressionValues.length >= 1){
             //check if need to be operated since only 2 numbers can be evaluated at once
             if(expressionValues.length >= 2) {
                 operate(expressionValues);
                 idx = 0;
             }
             
-            currOperation = temp;
+            Calc.setCurrOperation(temp);
             highlight();
 
             idx++;
@@ -194,7 +208,7 @@ function populateDisplay() {
 
     //function definitions for above calls
     const clearDisplay = () => {
-        currOperation = "";
+        Calc.setCurrOperation("");
         expressionValues = [];
         Calc.setDisplayValue("0");
         idx = 0;
@@ -244,8 +258,6 @@ function populateDisplay() {
         //handles leading zeroes;
         processZeroes(idx);
 
-        console.log(Calc.getDisplayValue());
-
         Calc.setDisplayValue(expressionValues[idx]);
         display.textContent = Calc.getDisplayValue();
     }
@@ -254,7 +266,7 @@ function populateDisplay() {
 
 //highlights the current operation
 function highlight() {
-    let currButton = document.getElementById(`${currOperation}`);
+    let currButton = document.getElementById(`${Calc.getCurrOperation()}`);
     currButton.style.cssText = 'background-color: rgb(0, 187, 187); color:rgb(226, 226, 226)';
 }
 
