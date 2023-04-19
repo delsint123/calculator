@@ -7,9 +7,6 @@ Recent Update: January 23, 2023
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 //initializing and declarations------------------------------------------------
-const display = document.querySelector('.display');
-const buttons = document.querySelectorAll('button');
-
 let numbers = new Set("1234567890.");
 let operators = new Set("+-*/");
 
@@ -85,7 +82,7 @@ populateDisplay();
 //functions -------------------------------------------------------------------
 
 //operations
-function add() {
+function add(display) {
     //must be numbers because of string concatenation as default
     let tempArr = Calc.getExpressionValues();
     tempArr.push(roundDecimals(parseFloat(tempArr.pop()) + parseFloat(tempArr.pop())));
@@ -94,7 +91,7 @@ function add() {
     display.textContent = (Calc.getExpressionValues())[0];
 };
 
-function subtract() {
+function subtract(display) {
     let tempArr = Calc.getExpressionValues();
     let tempVal = tempArr.pop();
     tempArr.push(roundDecimals(tempArr.pop() - tempVal));
@@ -103,7 +100,7 @@ function subtract() {
     display.textContent = (Calc.getExpressionValues())[0];
 };
 
-function multiply() {
+function multiply(display) {
     let tempArr = Calc.getExpressionValues();
     let curr = roundDecimals(tempArr.pop() * tempArr.pop())
     tempArr.push(curr);
@@ -112,7 +109,7 @@ function multiply() {
     display.textContent = (Calc.getExpressionValues())[0];
 };
 
-function divide() {
+function divide(display) {
     let tempArr = Calc.getExpressionValues();
     let temp = tempArr.pop();
     tempArr.push(roundDecimals(tempArr.pop() / temp));
@@ -136,19 +133,21 @@ function roundDecimals(result) {
 
 //decipher which operation to do
 function operate() {
+    const display = document.querySelector('.display');
+
     let currOperator = Calc.getCurrOperation();
 
     if(currOperator == '+') {
-        add();
+        add(display);
     }
     else if(currOperator == '-') {
-        subtract();
+        subtract(display);
     }
     else if(currOperator == '*') {
-        multiply();
+        multiply(display);
     }
     else if(currOperator == '/') {
-        divide();
+        divide(display);
     }
 
     Calc.setCurrOperation("");
@@ -159,6 +158,9 @@ function operate() {
 
 function populateDisplay() {
     let idx = 0;
+
+    const buttons = document.querySelectorAll('button');
+    const display = document.querySelector('.display');
 
     buttons.forEach(button => button.addEventListener('click', button => {
 
