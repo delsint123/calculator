@@ -7,7 +7,6 @@ Recent Update: January 23, 2023
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 //initializing and declarations------------------------------------------------
-const container = document.querySelector('.container');
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
 
