@@ -88,7 +88,7 @@ populateDisplay();
 function add() {
     //must be numbers because of string concatenation as default
     let tempArr = Calc.getExpressionValues();
-    tempArr.push(parseFloat(tempArr.pop()) + parseFloat(tempArr.pop()))
+    tempArr.push(roundDecimals(parseFloat(tempArr.pop()) + parseFloat(tempArr.pop())));
 
     Calc.setExpressionValues(tempArr);
     display.textContent = (Calc.getExpressionValues())[0];
